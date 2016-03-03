@@ -23,7 +23,16 @@ var CommentList = React.createClass({
     return React.createElement(
       "div",
       { className: "commentList" },
-      "Hello, world! I am a CommentList."
+      React.createElement(
+        Comment,
+        { author: "Mike" },
+        "Good using React."
+      ),
+      React.createElement(
+        Comment,
+        { author: "Bill" },
+        "I'm Bill."
+      )
     );
   }
 });
@@ -36,6 +45,27 @@ var CommentForm = React.createClass({
       "div",
       { className: "commentForm" },
       "Hello, world! I am a CommentForm."
+    );
+  }
+});
+
+var Comment = React.createClass({
+  displayName: "Comment",
+
+  render: function () {
+    return React.createElement(
+      "div",
+      { className: "comment" },
+      React.createElement(
+        "h2",
+        { "class": "commentAuthor" },
+        this.props.author
+      ),
+      React.createElement(
+        "div",
+        { "class": "commentContent" },
+        this.props.children
+      )
     );
   }
 });
