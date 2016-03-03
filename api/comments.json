@@ -1,4 +1,4 @@
 [
-  {"author": "Wellwind", "text": "Hello React."},
-  {"author": "Bill", "text": "I'm Bill."}
+  {"id": 1, "author": "Wellwind", "text": "Hello React."},
+  {"id": 2, "author": "Bill", "text": "I'm Bill. Nice day."}
 ]
