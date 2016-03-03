@@ -16,7 +16,7 @@ var CommentList = React.createClass({
     return (
       <div className="commentList">
         <Comment author="Mike">Good using React.</Comment>
-        <Comment author="Bill">I'm Bill.</Comment>
+        <Comment author="Bill">I'm <b>Bill</b>.</Comment>
       </div>
     );
   }
@@ -40,7 +40,7 @@ var Comment = React.createClass({
                 {this.props.author}
                 </h2>
                 <div class="commentContent">
-                {this.props.children}
+                {marked(this.props.children.toString())}
                 </div>
             </div>
         )
