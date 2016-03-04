@@ -10,7 +10,7 @@ var CommentBox = React.createClass({
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
-        }); 
+        });
     },
     getInitialState: function() {
         return {data: []};
@@ -52,7 +52,11 @@ var CommentForm = React.createClass({
   render: function() {
     return (
       <div className="commentForm">
-        Hello, world! I am a CommentForm.
+      <form className="commentForm">
+        <input type="text" placeholder="Your name" />
+        <input type="text" placeholder="Say something..." />
+        <input type="submit" value="Post" />
+      </form>
       </div>
     );
   }
