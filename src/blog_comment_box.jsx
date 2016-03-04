@@ -12,12 +12,20 @@ var CommentBox = React.createClass({
             }.bind(this)
         });
     },
+    handleCommentSubmit: function(comment) {
+      this.state.data.push({
+        id: this.state.data.length + 1,
+        author: comment.author,
+        text: comment.text});
+      this.setState({data: this.state.data});
+      // ajax call...
+    },
     getInitialState: function() {
         return {data: []};
     },
     componentDidMount: function() {
         this.loadCommentsFromServer();
-        setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+        // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     render: function() {
         return (
@@ -25,7 +33,7 @@ var CommentBox = React.createClass({
                 <h1>Comments</h1>
                 <CommentList data={this.state.data} />
                 <hr/>
-                <CommentForm />
+                <CommentForm onCommentSubmit={this.handleCommentSubmit} />
             </div>
         );
     }
@@ -49,14 +57,30 @@ var CommentList = React.createClass({
 });
 
 var CommentForm = React.createClass({
+  getInitialState: function() {
+    return {author: '', text: ''};
+  },
+  handleAuthorChange: function(e) {
+    this.setState({author: e.target.value});
+  },
+  handleTextChange: function(e) {
+    this.setState({text: e.target.value});
+  },
+  handleSubmit: function(e){
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    this.props.onCommentSubmit({author: author, text: text});
+    this.setState({author: '', text: ''});
+  },
   render: function() {
     return (
       <div className="commentForm">
-      <form className="commentForm">
-        <input type="text" placeholder="Your name" />
-        <input type="text" placeholder="Say something..." />
-        <input type="submit" value="Post" />
-      </form>
+        <form className="commentForm" onSubmit={this.handleSubmit}>
+          <input type="text" placeholder="Your name" onChange={this.handleAuthorChange} />
+          <input type="text" placeholder="Say something..." onChange={this.handleTextChange} />
+          <input type="submit" value="Post" />
+        </form>
       </div>
     );
   }
