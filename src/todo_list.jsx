@@ -1,82 +1,80 @@
+var TodoItem = React.createClass({
+    render: function(){
+        return (<li key={this.props.key}>{this.props.children}</li>);
+    }
+})
+
 var TodoItems = React.createClass({
-  render: function() {
-    var items = this.props.items.map(function(item) {
-      return (
-        <li key={item.id}>
-          {item.text}
-        </li>
-      );
-    });
-    return (
-      <ul className="todoItems">
-        {items}
-      </ul>
-    );
-  }
+    render: function() {
+        var displayItems = this.props.items.map(function(item) {
+            return (<TodoItem key={item.id}>{item.data}</TodoItem>);
+            // return (<li key={item.id}>{item.data}</li>);
+        });
+
+        return (
+            <div>
+                <ul>
+                    {displayItems}
+                </ul>
+            </div>
+        );
+    }
 });
 
 var AddTodoForm = React.createClass({
-  getInitialState: function(){
-    return {todoText: ""};
-  },
-  handleAddTodo: function(e){
-    if(this.state.todoText !== ""){
-      this.props.addItem(this.state.todoText);
-      this.setState({todoText: ""});
+    getInitialState: function(){
+        return {todoText: ""};  
+    },
+    handleTodoChange: function(e){
+        this.setState({todoText: e.target.value});        
+    },
+    handleAddTodoItem: function(e){
+        // console.log(this.state.todoText);
+        // 如何將資料新增到TodoItems中?
+        // 呼叫以props傳進來的addItem  
+        this.props.addItem(this.state.todoText);
+    },
+    render: function() {
+        return (
+            <div>
+                <input type="text" 
+                    value={this.state.todoText} 
+                    onChange={this.handleTodoChange}/>
+                <button
+                    onClick={this.handleAddTodoItem}>Add Todo Item</button>
+            </div>
+        );
     }
-  },
-  handleAddTodoTyping: function(e){
-    var name = e.target.name
-    var value = e.target.value;
-    var obj={};
-    obj[name] = value;
-    this.setState(obj);
-  },
-  render: function(){
-    return (
-      <div classNam="addTodoForm">
-        <div>
-          Todo item:
-          <input type="text" name="todoText" value={this.state.todoText}
-            onChange={this.handleAddTodoTyping}></input>
-          <button
-            onClick={this.handleAddTodo}
-            disabled={this.state.todoText === "" ? "disabled" : ""}>Add</button>
-        </div>
-      </div>
-    );
-  }
 });
 
 var TodoList = React.createClass({
-  getInitialState: function(){
-    var items = [
-      { id: 1, text: "Learn React."},
-      { id: 2, text: "Build todo list practice."}
-    ];
-    return {items: items};
-  },
-  addTodoItem: function(item){
-    this.state.items.push({
-      id: new Date(),
-      text: item
-    });
-    this.setState({items: this.state.items});
-  },
-  render: function(){
-    return(
-      <div className="todoList">
-        <TodoItems items={this.state.items}/>
-        <AddTodoForm addItem={this.addTodoItem}/>
-      </div>
-    );
-  }
+    getInitialState: function(){
+        return {
+            todoItems: 
+                [{ id: 1, data: "Item 1" },
+                { id: 2, data: "Item 2" }]
+        };
+    },
+    handleAddTodoItem: function(todoText){
+        var items = this.state.todoItems;
+        items.push({
+            id: items.length + 1,
+            data: todoText
+        });
+        this.setState({todoItems: items});
+    },
+    render: function() {
+        return (
+            <div className="todoList">
+                <h1>Todo List</h1>
+                <TodoItems items={this.state.todoItems}/>
+                <AddTodoForm addItem={this.handleAddTodoItem}/>
+            </div>
+        );
+    }
 });
 
 ReactDOM.render(
-  <div className="todoList">
-    <h1>ToDo List</h1>
-    <TodoList />
-  </div>,
-  document.getElementById("content")
+    <TodoList />,
+    document.getElementById("content")
 );
